@@ -50,6 +50,16 @@ class LoanService {
             }
         }
     }
+    async unblockBorrower(borrowerId) {
+        await this.borrowerExists(borrowerId);
+
+        const blockedBorrower = await blockModel.findOne({ userId: borrowerId });
+        if (blockedBorrower) {
+            blockedBorrower.isBlocked = false;
+            blockedBorrower.warningCount = 0;
+            return blockedBorrower.save();
+        }
+    }
 }
 
 export default new LoanService();
