@@ -3,6 +3,7 @@ import userModel from "../models/user-model.js";
 import bcrypt from "bcrypt";
 import tokenService from "./token-service.js";
 import UserDto from "../dtos/user-dto.js";
+import blockModel from "../models/block-model.js";
 class UserService {
     async registration(email, password) {
         const candidate = await userModel.findOne({ email });
