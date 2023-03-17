@@ -1,4 +1,4 @@
-module.exports = class UserDto {
+export default class UserDto {
     id;
     email;
 
@@ -6,4 +6,4 @@ module.exports = class UserDto {
         this.email = model.email;
         this.id = model._id;
     }
-};
+}

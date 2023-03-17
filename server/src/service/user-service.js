@@ -1,19 +1,17 @@
-const UserModel = require("../models/user-model");
-const bcrypt = require("bcrypt");
-const uuid = require("uuid");
-const tokenService = require("./token-service");
-const UserDto = require("../dtos/user-dto");
-const ApiError = require("../exceptions/api-error");
-
+import ApiError from "../exceptions/api-error.js";
+import userModel from "../models/user-model.js";
+import bcrypt from "bcrypt";
+import tokenService from "./token-service.js";
+import UserDto from "../dtos/user-dto.js";
 class UserService {
     async registration(email, password) {
-        const candidate = await UserModel.findOne({ email });
+        const candidate = await userModel.findOne({ email });
         if (candidate) {
             throw ApiError.BadRequest(`User with email ${email} already exists.`);
         }
         const hashPassword = await bcrypt.hash(password, 3);
 
-        const user = await UserModel.create({ email, password: hashPassword });
+        const user = await userModel.create({ email, password: hashPassword });
 
         const userDto = new UserDto(user); // id, email, name
         const tokens = tokenService.generateTokens({ ...userDto });
@@ -23,7 +21,7 @@ class UserService {
     }
 
     async login(email, password) {
-        const user = await UserModel.findOne({ email });
+        const user = await userModel.findOne({ email });
         if (!user) {
             throw ApiError.BadRequest("User with this email is not found.");
         }
@@ -52,7 +50,7 @@ class UserService {
         if (!userData || !tokenFromDb) {
             throw ApiError.UnauthorizedError();
         }
-        const user = await UserModel.findById(userData.id);
+        const user = await userModel.findById(userData.id);
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({ ...userDto });
 
@@ -61,9 +59,9 @@ class UserService {
     }
 
     async getAllUsers() {
-        const users = await UserModel.find();
+        const users = await userModel.find();
         return users;
     }
 }
 
-module.exports = new UserService();
+export default new UserService();
