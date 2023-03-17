@@ -4,19 +4,27 @@ import userModel from "../models/user-model.js";
 
 class LoanService {
     async addLoan(loanData) {
-        const borrower = await userModel.findById(loanData.userId);
-        if (!borrower) {
-            throw ApiError.BadRequest(`Borrower with id ${loanData.userId} doesn't exists!`);
-        }
+        await this.borrowerExists(loanData.borrowerId);
         const loan = await loanModel.create({
             amount: loanData.amount,
             term: loanData.term,
             name: loanData.name,
-            userId: loanData.userId,
+            borrowerId: loanData.borrowerId,
             addedDate: new Date(),
         });
 
         return loan;
+    }
+    async getBorrowerLoans(borrowerId) {
+        await this.borrowerExists(borrowerId);
+        const loans = await loanModel.find({ borrowerId });
+        return loans;
+    }
+    async borrowerExists(borrowerId) {
+        const borrower = await userModel.findById(borrowerId);
+        if (!borrower) {
+            throw ApiError.BadRequest(`Borrower with id ${borrowerId} doesn't exists!`);
+        }
     }
 }
 

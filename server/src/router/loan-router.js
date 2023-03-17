@@ -2,8 +2,8 @@ import { Router } from "express";
 import authMiddleware from "../middlewares/auth-middleware.js";
 import loanController from "../controllers/loan-controller.js";
 
-const loan = new Router();
+const loanRouter = new Router();
 
-loan.post("/loan/apply", authMiddleware, loanController.apply);
+loanRouter.post("/loan/apply", authMiddleware, loanController.apply);
 
-export default loan;
+export default loanRouter;
