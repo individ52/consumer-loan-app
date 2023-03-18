@@ -22,6 +22,17 @@ class LoanController {
             next(e);
         }
     }
+    async getDifferentiatedPaymentShedule(req, res, next) {
+        try {
+            const { loanId } = req.params;
+
+            const loanInfo = await loanService.getDifferentiatedPaymentShedule(loanId);
+
+            return res.json(loanInfo);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new LoanController();

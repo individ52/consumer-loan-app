@@ -108,6 +108,46 @@ class LoanService {
 
         return shedule;
     }
+    async getDifferentiatedPaymentShedule(loanId) {
+        const loanData = await loanModel.findById(loanId);
+        if (!loanData) throw ApiError.BadRequest("This loan doesn't exist");
+
+        const loan = new LoanDto(loanData);
+
+        const shedule = [];
+
+        const A = loan.amount;
+        const R = loan.monthlyInterestRate;
+        const T = loan.term;
+        const D_start = loan.addedDate;
+        const principalPayment = Math.round((A / T) * 100) / 100;
+
+        for (let i = 1; i <= T; i++) {
+            const monthCount = D_start.getMonth() + i;
+            const newDate = new Date(D_start).setMonth(monthCount);
+            const paymentDate = new Date(newDate);
+
+            var outstandingBalance = A;
+            if (shedule.length > 0) {
+                const lastNote = shedule[shedule.length - 1];
+                outstandingBalance = Math.round((lastNote.outstandingBalance - lastNote.principalPayment) * 100) / 100;
+            }
+
+            const accruedInterest = Math.round(outstandingBalance * R * 100) / 100;
+            const paymentAmount = accruedInterest + principalPayment;
+
+            shedule.push({
+                paymentNum: i,
+                paymentDate,
+                outstandingBalance,
+                accruedInterest,
+                principalPayment,
+                paymentAmount,
+            });
+        }
+
+        return shedule;
+    }
 }
 
 export default new LoanService();
