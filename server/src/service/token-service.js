@@ -48,5 +48,10 @@ class TokenService {
         const tokenData = await tokenModel.findOne({ refreshToken });
         return tokenData;
     }
+
+    // For testing
+    async clearAllTokens() {
+        await tokenModel.deleteMany();
+    }
 }
 export default new TokenService();

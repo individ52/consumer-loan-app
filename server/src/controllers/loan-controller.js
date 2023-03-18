@@ -33,6 +33,16 @@ class LoanController {
             next(e);
         }
     }
+
+    // Preparation for testing
+    async clearAllLoans(req, res, next) {
+        try {
+            await loanService.clearAllLoans();
+            return res.json({ message: "okay" });
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new LoanController();

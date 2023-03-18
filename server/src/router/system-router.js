@@ -6,8 +6,9 @@ import loanAccessMiddleware from "../middlewares/loan-access-middleware.js";
 
 const loanRouter = new Router();
 
-loanRouter.post("/loan/apply", authMiddleware, blockedMiddleware, loanController.apply);
-loanRouter.get("/loan/:loanId/equal-shares-shedule", authMiddleware, loanAccessMiddleware, loanController.getEqualSharesShedule);
-loanRouter.get("/loan/:loanId/differentiated-payment-shedule", authMiddleware, loanAccessMiddleware, loanController.getDifferentiatedPaymentShedule);
+loanRouter.post("/clear/user", authMiddleware, loanController.apply);
+loanRouter.post("/clear/token", authMiddleware, loanController.apply);
+loanRouter.post("/clear/block", authMiddleware, loanController.apply);
+loanRouter.post("/clear/loan", authMiddleware, loanController.apply);
 
 export default loanRouter;

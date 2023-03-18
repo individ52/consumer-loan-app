@@ -1,4 +1,5 @@
 import loanService from "../service/loan-service.js";
+import userService from "../service/user-service.js";
 
 class BorrowerController {
     async getLoans(req, res, next) {
@@ -18,6 +19,16 @@ class BorrowerController {
             await loanService.unblockBorrower(borrowerId);
 
             return res.json({ message: "User is successfully unblocked!" });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    // Preparation for testing
+    async clearAllBlock(req, res, next) {
+        try {
+            await userService.clearAllBlock();
+            return res.json({ message: "okay" });
         } catch (e) {
             next(e);
         }
