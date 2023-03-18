@@ -7,6 +7,7 @@ const LoanSchema = new Schema({
     name: { type: String, required: true },
     borrowerId: { type: Schema.Types.ObjectId, ref: "User" },
     addedDate: { type: Date, required: true },
+    monthlyInterestRate: {type: Number, required: true, default: 0.05}
 });
 
 export default model("Loan", LoanSchema);
