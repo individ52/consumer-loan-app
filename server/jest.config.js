@@ -7,7 +7,4 @@ export default {
     resetMocks: true,
     restoreMocks: true,
     setupFiles: ["./test/setup-test.cjs"],
-    globals: {
-        DB_URL: 123,
-    },
 };

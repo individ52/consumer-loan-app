@@ -1,3 +1,3 @@
-// const dotenv = require("dotenv");
+const dotenv = require("dotenv");
 
-// dotenv.config({ path: "./../env/.dev.env" });
+dotenv.config({ path: "env/.dev.env" });
