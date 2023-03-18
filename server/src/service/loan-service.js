@@ -148,10 +148,6 @@ class LoanService {
 
         return shedule;
     }
-    // For testing
-    async clearAllLoans() {
-        await loanModel.deleteMany();
-    }
 }
 
 export default new LoanService();

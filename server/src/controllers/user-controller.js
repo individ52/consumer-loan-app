@@ -50,16 +50,6 @@ class UserController {
             next(e);
         }
     }
-
-    // Preparation for testing
-    async clearAllUsers(req, res, next) {
-        try {
-            await userService.clearAllUsers();
-            return res.json({ message: "okay" });
-        } catch (e) {
-            next(e);
-        }
-    }
 }
 
 export default new UserController();

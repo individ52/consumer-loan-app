@@ -58,14 +58,6 @@ class UserService {
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return { ...tokens, user: userDto };
     }
-
-    // For testing
-    async clearAllUsers() {
-        await userModel.deleteMany();
-    }
-    async clearAllBlock() {
-        await loanModel.deleteMany();
-    }
 }
 
 export default new UserService();

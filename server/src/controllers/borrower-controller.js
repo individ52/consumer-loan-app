@@ -23,16 +23,6 @@ class BorrowerController {
             next(e);
         }
     }
-
-    // Preparation for testing
-    async clearAllBlock(req, res, next) {
-        try {
-            await userService.clearAllBlock();
-            return res.json({ message: "okay" });
-        } catch (e) {
-            next(e);
-        }
-    }
 }
 
 export default new BorrowerController();
