@@ -11,6 +11,17 @@ class LoanController {
             next(e);
         }
     }
+    async getEqualSharesShedule(req, res, next) {
+        try {
+            const { loanId } = req.params;
+
+            const loanInfo = await loanService.getEqualSharesShedule(loanId);
+
+            return res.json(loanInfo);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new LoanController();

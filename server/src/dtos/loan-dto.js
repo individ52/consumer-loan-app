@@ -1,4 +1,5 @@
 export default class LoanDto {
+    id;
     amount;
     term;
     name;
@@ -15,6 +16,7 @@ export default class LoanDto {
         this.borrowerId = model.borrowerId;
         this.addedDate = model.addedDate;
         this.monthlyInterestRate = model.monthlyInterestRate;
+        this.id = model._id;
         this.setAmountBack();
         this.setDateBack();
     }

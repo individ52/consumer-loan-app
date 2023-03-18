@@ -63,6 +63,51 @@ class LoanService {
             return blockedBorrower.save();
         }
     }
+    async getEqualSharesShedule(loanId) {
+        const loanData = await loanModel.findById(loanId);
+        if (!loanData) throw ApiError.BadRequest("This loan doesn't exist");
+
+        const loan = new LoanDto(loanData);
+
+        const shedule = [];
+
+        const A = loan.amount;
+        const R = loan.monthlyInterestRate;
+        const T = loan.term;
+        const D_start = loan.addedDate;
+        const paymentMonthAmount = Math.round(((A * (R * Math.pow(1 + R, T))) / (Math.pow(1 + R, T) - 1)) * 100) / 100;
+
+        for (let i = 1; i <= T; i++) {
+            const monthCount = D_start.getMonth() + i;
+            const newDate = new Date(D_start).setMonth(monthCount);
+            const paymentDate = new Date(newDate);
+
+            var outstandingBalance = A;
+            if (shedule.length > 0) {
+                const lastNote = shedule[shedule.length - 1];
+                outstandingBalance = Math.round((lastNote.outstandingBalance - lastNote.principalPayment) * 100) / 100;
+            }
+            var paymentAmount = paymentMonthAmount;
+
+            const accruedInterest = Math.round(outstandingBalance * R * 100) / 100;
+            const principalPayment = Math.round((paymentAmount - accruedInterest) * 100) / 100;
+
+            if (i == T && outstandingBalance - principalPayment != 0) {
+                paymentAmount = outstandingBalance + accruedInterest;
+            }
+
+            shedule.push({
+                paymentNum: i,
+                paymentDate,
+                outstandingBalance,
+                accruedInterest,
+                principalPayment,
+                paymentAmount,
+            });
+        }
+
+        return shedule;
+    }
 }
 
 export default new LoanService();
