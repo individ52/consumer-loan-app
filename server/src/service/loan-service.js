@@ -35,7 +35,7 @@ class LoanService {
         if (lastAddedLoans.length > 0) {
             const lastLoan = lastAddedLoans[0];
             const diffHours = Math.abs(lastLoan.addedDate.getTime() - new Date().getTime()) / (1000 * 60 * 60);
-            if (diffHours < 0.01) {
+            if (diffHours < 24) {
                 const blockedData = await blockModel.findOne({ userId: borrowerId });
                 if (blockedData) {
                     blockedData.warningCount++;
@@ -90,10 +90,11 @@ class LoanService {
             var paymentAmount = paymentMonthAmount;
 
             const accruedInterest = Math.round(outstandingBalance * R * 100) / 100;
-            const principalPayment = Math.round((paymentAmount - accruedInterest) * 100) / 100;
+            var principalPayment = Math.round((paymentAmount - accruedInterest) * 100) / 100;
 
             if (i == T && outstandingBalance - principalPayment != 0) {
                 paymentAmount = outstandingBalance + accruedInterest;
+                principalPayment = outstandingBalance;
             }
 
             shedule.push({
@@ -120,7 +121,7 @@ class LoanService {
         const R = loan.monthlyInterestRate;
         const T = loan.term;
         const D_start = loan.addedDate;
-        const principalPayment = Math.round((A / T) * 100) / 100;
+        const PP = Math.round((A / T) * 100) / 100;
 
         for (let i = 1; i <= T; i++) {
             const monthCount = D_start.getMonth() + i;
@@ -134,7 +135,12 @@ class LoanService {
             }
 
             const accruedInterest = Math.round(outstandingBalance * R * 100) / 100;
-            const paymentAmount = accruedInterest + principalPayment;
+            var paymentAmount = accruedInterest + PP;
+            var principalPayment = PP;
+            if (i == T && outstandingBalance - PP != 0) {
+                paymentAmount = outstandingBalance + accruedInterest;
+                principalPayment = outstandingBalance;
+            }
 
             shedule.push({
                 paymentNum: i,
