@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import createServer from "./server.js";
 import dotenv from "dotenv";
 
-dotenv.config({ path: `env/.dev.env` });
+dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
