@@ -13,7 +13,11 @@ Reject the loan application if:
 ● The borrower is blacklisted (store blacklisted personal ids in a config file or a database)
 ● There have been too many applications from one personal id in the last 24 hours
 
-Project description:
+RUN PROJECT:
+1. Go to folder 'server' and run 'npm i' to install needed node modules
+2. Run "npm run dev".
+
+PROJECT DESCRIPTION:
 This project is a simple bank API, that makes it possible to apply loans, get borrower loans and get payment shedule for Differentiated and equal loan.
 In project is also implemented the functionality of blocking: if the user tries to apply loan more than once in 24 hours and tries to do it more than 3 times, user will be banned.
 There is also oppartunity to ublock user.
@@ -23,6 +27,7 @@ Project code quality:
 -   Project has authorization with jwt.
 -   Node.js + express.
 -   Business functionality is separated from controllers.
+-   Project has postman tests to testing API (control authorization, applying loans, getting payment shedule, contol user block etc.)
 -   There are 4 middlewares:
 
 1. error-middleware - handle errors controll is user blocked or not and access to loan.
