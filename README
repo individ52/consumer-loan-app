@@ -1,0 +1,30 @@
+TASK:
+
+Create a simple consumer loan app.
+
+The app is a headless web service that exposes the following endpoints:
+● Apply for a loan by providing loan amount, term, name, and personal id
+● List all loans by a borrower (you can skip the authorization part)
+
+Lending rules:
+● Monthly interest rate: 5%
+
+Reject the loan application if:
+● The borrower is blacklisted (store blacklisted personal ids in a config file or a database)
+● There have been too many applications from one personal id in the last 24 hours
+
+Project description:
+This project is a simple bank API, that makes it possible to apply loans, get borrower loans and get payment shedule for Differentiated and equal loan.
+In project is also implemented the functionality of blocking: if the user tries to apply loan more than once in 24 hours and tries to do it more than 3 times, user will be banned.
+There is also oppartunity to ublock user.
+
+Project code quality:
+
+-   Project has authorization with jwt.
+-   Node.js + express.
+-   Business functionality is separated from controllers.
+-   There are 4 middlewares:
+
+1. error-middleware - handle errors controll is user blocked or not and access to loan.
+2. auth-middleware - controll token - is it valid + decode token to use in reqest user data.
+3. blocked-middleware - there were created this middleware to make it easier block other endpoints for blocked users.
